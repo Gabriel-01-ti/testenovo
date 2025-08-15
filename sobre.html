@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<a href="sobre.html">Sobre</a>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Diagnóstico Agrícola</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="google-site-verification" content="-2xsMwQkY93C4kgW1fRAF0xyCxTqE0__nhGQHI2nDtk" />
+  <title>Diagnóstico de Pragas Agrícolas Online</title>
+  <meta name="description" content="Identifique pragas agrícolas de forma rápida e fácil com nosso diagnóstico online.">
+  <meta name="keywords" content="diagnóstico de pragas, agricultura, plantas, controle de pragas">
+
+</head>
+<body>
+  <div class="container">
+    <h1>🌱 Diagnóstico de Plantas</h1>
+    
+    <label for="planta">Escolha a planta:</label>
+    <select id="planta" onchange="carregarSintomas()">
+      <option value="">-- Selecione --</option>
+      <option value="milho">Milho 🌽</option>
+      <option value="soja">Soja 🌿</option>
+      <option value="trigo">Trigo 🌾</option>
+      <option value="feijao">Feijão 🫘</option>
+      <option value="aveia">Aveia 🌱</option>
+      <option value="laranja">Laranja / Bergamota 🍊</option>
+      <option value="batata">Batata 🥔</option>
+      <option value="repolho">Repolho / Alface 🥬</option>
+      <option value="uva">Uva 🍇</option>
+      <option value="tabaco">Tabaco 🍃</option>
+      <option value="arroz">Arroz 🍚</option>
+    </select>
+
+    <div id="sintomas-container" style="display: none;">
+      <label for="sintoma">Escolha o sintoma:</label>
+      <select id="sintoma"></select>
+      <button onclick="mostrarDiagnostico()">Ver diagnóstico</button>
+    </div>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+const dados = {
+  milho: {
+    "Manchas alongadas, centro cinza e borda avermelhada; folhas amarelam.": {
+      problema: "Cercosporiose (Cercospora spp.) — Fungos favorecidos por alta umidade e restos culturais infectados.",
+      solucao: "Rotação, híbridos resistentes, manejo de umidade.",
+      fungicida: "Tebuconazol"
+    },
+    "Pústulas marrons/alaranjadas; queda precoce de folhas.": {
+      problema: "Ferrugens (Puccinia spp.) — Fungos, cada tipo com clima específico.",
+      solucao: "Cultivares resistentes, monitoramento, fungicidas.",
+      fungicida: "Trifloxistrobina"
+    },
+    "Manchas brancas com halo marrom; folhas secam.": {
+      problema: "Mancha branca do milho (Phaeosphaeria maydis) — Fungos em clima úmido e frio.",
+      solucao: "Rotação, fungicidas no início dos sintomas.",
+      fungicida: "Propiconazol"
+    },
+    "Manchas alongadas verde-claras que evoluem para marrom.": {
+      problema: "Helmintosporiose (Exserohilum turcicum) — Fungos em temperatura amena e alta umidade.",
+      solucao: "Cultivares tolerantes, fungicidas, espaçamento adequado.",
+      fungicida: "Azoxistrobina"
+    },
+    "Folhas avermelhadas ou amareladas, plantas atrofiadas.": {
+      problema: "Enfezamento vermelho e pálido (Mollicutes) — Transmitidos por cigarrinhas (Dalbulus maidis).",
+      solucao: "Controle de vetores, plantio na época recomendada.",
+      fungicida: "Não aplicável"
+    }
+  },
+
+  soja: {
+    "Manchas escuras, folhas amarelam e caem.": {
+      problema: "Ferrugem-asiática (Phakopsora pachyrhizi) — Fungos em clima quente e úmido.",
+      solucao: "Vazio sanitário, cultivares resistentes, fungicidas.",
+      fungicida: "Trifloxistrobina"
+    },
+    "Micélio branco nos caules; murcha.": {
+      problema: "Mofo-branco (Sclerotinia sclerotiorum) — Fungos favorecidos por alta umidade.",
+      solucao: "Fungicidas preventivos, rotação, monitoramento.",
+      fungicida: "Tebuconazol"
+    },
+    "Manchas circulares com halo amarelado.": {
+      problema: "Mancha-alvo (Corynespora cassiicola) — Fungos em clima quente e úmido.",
+      solucao: "Fungicidas foliares, manejo de restos culturais.",
+      fungicida: "Azoxistrobina"
+    },
+    "Manchas escuras em vagens e hastes.": {
+      problema: "Antracnose (Colletotrichum truncatum) — Fungos transmitidos por sementes e restos.",
+      solucao: "Sementes sadias, rotação, fungicidas.",
+      fungicida: "Cymoxanil + Mancozebe"
+    },
+    "Lesões marrons nos caules; murcha.": {
+      problema: "Cancro-da-haste (Diaporthe phaseolorum) — Fungos em restos culturais e sementes.",
+      solucao: "Rotação, sementes tratadas, cultivares resistentes.",
+      fungicida: "Tebuconazol"
+    }
+  },
+
+  trigo: {
+    "Pústulas marrons; folhas secam.": {
+      problema: "Ferrugem-do-trigo (Puccinia triticina)",
+      solucao: "Cultivares resistentes e fungicidas.",
+      fungicida: "Propiconazol"
+    },
+    "Listras amarelas nas folhas.": {
+      problema: "Ferrugem-amarela (Puccinia striiformis)",
+      solucao: "Cultivares resistentes e manejo adequado.",
+      fungicida: "Azoxistrobina"
+    },
+    "Manchas amareladas com centro escuro.": {
+      problema: "Mancha-amarela (Pyrenophora tritici-repentis)",
+      solucao: "Rotação e manejo de restos culturais.",
+      fungicida: "Tebuconazol"
+    },
+    "Pó branco sobre folhas.": {
+      problema: "Oídio (Blumeria graminis)",
+      solucao: "Cultivares resistentes e fungicidas.",
+      fungicida: "Mancozebe"
+    },
+    "Espigas esbranquiçadas, grãos chochos.": {
+      problema: "Giberela (Fusarium graminearum)",
+      solucao: "Rotação e fungicidas na floração.",
+      fungicida: "Tebuconazol"
+    }
+  },
+
+  feijao: {
+    "Folhas amareladas e deformadas.": {
+      problema: "Mosaico-dourado (BGMV)",
+      solucao: "Controle do vetor e uso de variedades resistentes.",
+      fungicida: "Não aplicável"
+    },
+    "Manchas marrons com halo amarelado.": {
+      problema: "Crestamento-bacteriano-comum (Xanthomonas spp.)",
+      solucao: "Tratamento de sementes e rotação.",
+      fungicida: "Não aplicável"
+    },
+    "Manchas escuras em caules e vagens.": {
+      problema: "Antracnose (Colletotrichum lindemuthianum)",
+      solucao: "Sementes sadias e fungicidas.",
+      fungicida: "Azoxistrobina"
+    },
+    "Pústulas alaranjadas nas folhas.": {
+      problema: "Ferrugem-do-feijoeiro (Uromyces appendiculatus)",
+      solucao: "Cultivares resistentes e fungicidas.",
+      fungicida: "Trifloxistrobina"
+    },
+    "Escurecimento e apodrecimento de raízes.": {
+      problema: "Podridão-radicular (Rhizoctonia solani)",
+      solucao: "Rotação de culturas e tratamento de sementes.",
+      fungicida: "Tebuconazol"
+    }
+  },
+
+  aveia: {
+    "Pó branco nas folhas e colmos; amarelecimento posterior.": {
+      problema: "Oídio (Blumeria graminis)",
+      solucao: "Cultivares resistentes e fungicidas.",
+      fungicida: "Tebuconazol, Myclobutanil"
+    },
+    "Manchas alongadas marrons com halo amarelado.": {
+      problema: "Mancha-foliar (Drechslera avenae)",
+      solucao: "Rotação, espaçamento adequado e fungicidas.",
+      fungicida: "Azoxistrobina, Propiconazol"
+    },
+    "Pústulas alaranjadas na face inferior das folhas.": {
+      problema: "Ferrugem-da-folha (Puccinia coronata)",
+      solucao: "Cultivares resistentes e fungicidas preventivos.",
+      fungicida: "Trifloxistrobina, Mancozebe"
+    },
+    "Colmos escurecidos e frágeis, plantas tombando.": {
+      problema: "Podridão-de-colmo (Fusarium spp.)",
+      solucao: "Rotação e drenagem adequada.",
+      fungicida: "Não aplicável"
+    },
+    "Lesões esbranquiçadas com bordas escuras.": {
+      problema: "Mancha-branca (Phaeosphaeria spp.)",
+      solucao: "Fungicidas no início dos sintomas e cultivares tolerantes.",
+      fungicida: "Tebuconazol, Piraclostrobina"
+    }
+  },
+
+  laranja: {
+    "Lesões circulares elevadas com halo amarelado.": {
+      problema: "Cancro-cítrico (Xanthomonas citri)",
+      solucao: "Desinfecção de ferramentas e bactericidas à base de cobre.",
+      fungicida: "Bactericida cúprico"
+    },
+    "Manchas marrons ásperas em frutos e folhas.": {
+      problema: "Melanose (Phomopsis citri)",
+      solucao: "Fungicidas preventivos e podas para arejamento.",
+      fungicida: "Azoxistrobina, Mancozebe"
+    },
+    "Escurecimento da base do tronco e queda de folhas.": {
+      problema: "Podridão-parda (Phytophthora spp.)",
+      solucao: "Melhorar drenagem e fungicidas específicos.",
+      fungicida: "Fosetil-Al, Mancozebe"
+    },
+    "Amarelecimento e queda de folhas; redução no vigor.": {
+      problema: "Tristeza-dos-citros (CTV)",
+      solucao: "Uso de porta-enxertos tolerantes e controle de vetores.",
+      fungicida: "Não aplicável"
+    },
+    "Manchas cloróticas irregulares; folhas endurecidas.": {
+      problema: "Clorose-variegada-dos-citros (CVC)",
+      solucao: "Controle de vetores e erradicação de plantas doentes.",
+      fungicida: "Não aplicável"
+    }
+  },
+
+  batata: {
+    "Manchas escuras e úmidas nas folhas; podridão nos tubérculos.": {
+      problema: "Requeima (Phytophthora infestans)",
+      solucao: "Fungicidas sistêmicos e manejo da irrigação.",
+      fungicida: "Mancozebe, Cymoxanil + Mancozebe"
+    },
+    "Murcha súbita e escurecimento dos vasos.": {
+      problema: "Murchadeira (Ralstonia solanacearum)",
+      solucao: "Rotação de culturas e tubérculos sãos.",
+      fungicida: "Não aplicável"
+    },
+    "Manchas circulares concêntricas nas folhas.": {
+      problema: "Alternariose (Alternaria solani)",
+      solucao: "Aplicação de fungicidas e espaçamento adequado.",
+      fungicida: "Azoxistrobina, Mancozebe"
+    },
+    "Lesões ásperas e corticosas nos tubérculos.": {
+      problema: "Sarna-comum (Streptomyces scabies)",
+      solucao: "Ajuste de pH do solo e rotação de culturas.",
+      fungicida: "Não aplicável"
+    },
+    "Partes secas nos tubérculos e tecido interno esfarelado.": {
+      problema: "Podridão-seca (Fusarium spp.)",
+      solucao: "Armazenamento ventilado e tratamento pós-colheita.",
+      fungicida: "Fosetil-Al, Tebuconazol"
+    }
+  },
+
+  repolho: {
+    "Manchas amareladas e mofo cinza na face inferior das folhas.": {
+      problema: "Míldio (Peronospora parasitica)",
+      solucao: "Evitar irrigação excessiva e fungicidas preventivos.",
+      fungicida: "Mancozebe, Fosetil-Al"
+    },
+    "Tecidos moles com odor desagradável.": {
+      problema: "Podridão-mole (Erwinia carotovora)",
+      solucao: "Higiene, drenagem e evitar ferimentos.",
+      fungicida: "Não aplicável"
+    },
+    "Manchas circulares com anéis concêntricos escuros.": {
+      problema: "Mancha-anelar (Alternaria brassicae)",
+      solucao: "Sementes tratadas e aplicação de fungicidas.",
+      fungicida: "Azoxistrobina, Tebuconazol"
+    },
+    "Mofo branco no caule; murcha da planta.": {
+      problema: "Podridão-de-esclerotínia (Sclerotinia sclerotiorum)",
+      solucao: "Rotação e manejo da irrigação.",
+      fungicida: "Iprodiona, Fludioxonil"
+    },
+    "Bordas das folhas necrosadas e escurecidas.": {
+      problema: "Queima-de-bordo (Pseudomonas syringae)",
+      solucao: "Evitar excesso de irrigação, bactericidas.",
+      fungicida: "Bactericida cúprico"
+    }
+  },
+
+  uva: {
+    "Manchas circulares marrons nas folhas; queda de folhas.": {
+      problema: "Míldio da videira (Plasmopara viticola)",
+      solucao: "Pulverização preventiva e podas para ventilação.",
+      fungicida: "Mancozebe, Fosetil-Al"
+    },
+    "Revestimento branco de pó nas folhas e cachos.": {
+      problema: "Oídio (Erysiphe necator)",
+      solucao: "Cultivares resistentes e aplicações preventivas.",
+      fungicida: "Enxofre, Azoxistrobina"
+    },
+    "Manchas escuras nos ramos e cachos rachados": {
+      problema: "Podridão-parda (Botrytis cinerea)",
+      solucao: "Remoção de cachos afetados e pulverização preventiva.",
+      fungicida: "Iprodiona"
+    },
+    "Lesões necróticas em folhas e queda de brotos novos": {
+      problema: "Antracnose (Elsinoe ampelina)",
+      solucao: "Aplicação de calda bordalesa e remoção de ramos infectados.",
+      fungicida: "Calda bordalesa"
+    },
+    "Folhas enroladas e bordas amareladas": {
+      problema: "Virose do enrolamento da videira",
+      solucao: "Controle das cochonilhas e uso de mudas sadias.",
+      fungicida: "Não aplicável"
+    }
+  },
+
+  arroz: {
+    "Manchas elípticas com centro cinza nas folhas": {
+      problema: "Brusone (Magnaporthe oryzae)",
+      solucao: "Cultivares resistentes e fungicidas no início dos sintomas.",
+      fungicida: "Trifloxistrobina + Tebuconazol"
+    },
+    "Escurecimento da bainha e base do colmo; planta quebra": {
+      problema: "Podridão-de-colmo (Fusarium spp.)",
+      solucao: "Rotação de culturas e manejo da irrigação.",
+      fungicida: "Propiconazol"
+    },
+    "Manchas amareladas nas folhas que evoluem para necrose": {
+      problema: "Mancha-parda (Cochliobolus miyabeanus)",
+      solucao: "Rotação e aplicação preventiva de fungicida.",
+      fungicida: "Mancozebe"
+    },
+    "Lesões aquosas na bainha com aspecto mucoso": {
+      problema: "Podridão da bainha (Sarocladium oryzae)",
+      solucao: "Melhorar drenagem e reduzir densidade de semeadura.",
+      fungicida: "Tebuconazol"
+    },
+    "Folhas deformadas e plantas raquíticas": {
+      problema: "Virose da folha branca",
+      solucao: "Controle de insetos vetores e uso de sementes sadias.",
+      fungicida: "Não aplicável"
+    }
+  },
+
+  tabaco: {
+    "Manchas circulares com halo amarelo nas folhas": {
+      problema: "Mancha-alternária (Alternaria alternata)",
+      solucao: "Afastamento entre plantas e aplicações preventivas.",
+      fungicida: "Azoxistrobina ou Boscalida"
+    },
+    "Plantas amarelas com raízes escuras": {
+      problema: "Amarelão do tabaco (Pythium spp./Fusarium spp.)",
+      solucao: "Rotação e tratamento de mudas.",
+      fungicida: "Fluopicolide + Propamocarbe"
+    },
+    "Manchas marrons que aumentam e se unem": {
+      problema: "Mancha-parda (Cercospora nicotianae)",
+      solucao: "Melhorar ventilação e aplicar fungicida no início.",
+      fungicida: "Mancozebe"
+    },
+    "Pó branco nas folhas (principalmente parte inferior)": {
+      problema: "Oídio (Erysiphe cichoracearum)",
+      solucao: "Maior espaçamento e calda bordalesa.",
+      fungicida: "Calda bordalesa"
+    },
+    "Folhas deformadas e encarquilhadas no topo": {
+      problema: "Virose do mosaico do tabaco",
+      solucao: "Uso de mudas sadias e controle de pulgões.",
+      fungicida: "Não aplicável"
+    }
+  }
+};
+
+
+function carregarSintomas() {
+  const planta = document.getElementById("planta").value;
+  const sintomas = document.getElementById("sintoma");
+  const container = document.getElementById("sintomas-container");
+  sintomas.innerHTML = "";
+  document.getElementById("resultado").style.display = "none";
+
+  if (planta) {
+    container.style.display = "block";
+    Object.keys(dados[planta]).forEach((sintoma) => {
+      const option = document.createElement("option");
+      option.value = sintoma;
+      option.textContent = sintoma;
+      sintomas.appendChild(option);
+    });
+  } else {
+    container.style.display = "none";
+  }
+}
+
+function mostrarDiagnostico() {
+  const planta = document.getElementById("planta").value;
+  const sintoma = document.getElementById("sintoma").value;
+  const resultado = document.getElementById("resultado");
+
+  if (planta && sintoma) {
+    const diag = dados[planta][sintoma];
+    resultado.innerHTML = `
+      <strong>Problema:</strong> ${diag.problema}<br>
+      <strong>Solução:</strong> ${diag.solucao}<br>
+      <strong>Tratamento/Fungicida:</strong> ${diag.fungicida || "Não aplicável"}
+    `;
+    resultado.style.display = "block";
+  }
+}
+  </script>
+</body>
+</html>

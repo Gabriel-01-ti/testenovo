@@ -1,0 +1,102 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Corpo da página */
+body {
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+/* Container principal */
+.container {
+  background: #fff;
+  border-radius: 15px;
+  padding: 25px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+.container h1 {
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 20px;
+}
+
+/* Rótulos */
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+/* Selects */
+select {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #a5d6a7;
+  border-radius: 8px;
+  background: #f1f8e9;
+  margin-top: 5px;
+  font-size: 1em;
+  transition: border 0.3s ease;
+}
+
+select:focus {
+  border-color: #66bb6a;
+  outline: none;
+}
+
+/* Botão */
+button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  background: #43a047;
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #2e7d32;
+}
+
+/* Resultado */
+#resultado {
+  margin-top: 20px;
+  background: #f1f8e9;
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 5px solid #43a047;
+}
+
+#resultado strong {
+  color: #2e7d32;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+  }
+  select, button {
+    font-size: 0.95em;
+  }
+}
