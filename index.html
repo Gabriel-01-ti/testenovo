@@ -203,11 +203,17 @@ select{
 <ul id="listaCarrinho"></ul>
 <p><strong>Total: R$ <span id="total">0</span></strong></p>
 <p><small>⚠ Taxa de entrega será informada no WhatsApp.</small></p>
+<h3>Tipo de Pedido:</h3>
+<select id="tipoPedido">
+  <option value="Entrega">🚗 Entrega</option>
+  <option value="Retirada">🛍️ Retirada</option>
+  <option value="Local">🍽️ Comer no local</option>
+</select>
 <button onclick="enviarPedido()">Pedir no WhatsApp</button>
 </div>
 
 <script>
-const NUMERO_WHATSAPP = "5599999999999";
+const NUMERO_WHATSAPP = "5555996698757";
 
 let carrinho = [];
 let saboresSelecionados = {salgada:[], doce:[]};
@@ -300,18 +306,45 @@ alert("Carrinho vazio!");
 return;
 }
 
-let mensagem="Olá! Quero pedir:\n\n";
-let total=0;
+let nomeCliente = prompt("Digite seu nome para a comanda:");
 
-carrinho.forEach(item=>{
-mensagem+=`${item.nome} - R$${item.preco}\n`;
-total+=item.preco;
+if(!nomeCliente || nomeCliente.trim()===""){
+alert("Nome obrigatório para enviar pedido.");
+return;
+}
+
+let tipoPedido = document.getElementById("tipoPedido").value;
+
+let agora = new Date();
+let data = agora.toLocaleDateString("pt-BR");
+let hora = agora.toLocaleTimeString("pt-BR");
+
+let mensagem = "🍕 *COMANDA - Pizzaria NomeAqui*\n";
+mensagem += "----------------------------------\n";
+mensagem += `📅 Data: ${data}\n`;
+mensagem += `⏰ Hora: ${hora}\n`;
+mensagem += `👤 Cliente: ${nomeCliente}\n`;
+mensagem += `📦 Tipo: ${tipoPedido}\n`;
+mensagem += "----------------------------------\n\n";
+mensagem += "*PEDIDO:*\n\n";
+
+let total = 0;
+
+carrinho.forEach((item,index)=>{
+mensagem += `${index+1}. ${item.nome}\n   💰 R$${item.preco}\n\n`;
+total += item.preco;
 });
 
-mensagem+=`\nTotal: R$${total}`;
-mensagem+="\nTaxa de entrega será combinada no atendimento.";
+mensagem += "----------------------------------\n";
+mensagem += `💵 *TOTAL: R$${total}*\n\n`;
 
-let url=`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+if(tipoPedido === "Entrega"){
+mensagem += "🚗 Taxa de entrega será informada no atendimento.\n";
+}
+
+mensagem += "\nAguardando confirmação do pedido ✅";
+
+let url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
 window.open(url,"_blank");
 }
 
