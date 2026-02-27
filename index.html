@@ -8,34 +8,102 @@
 <style>
 body{
   font-family: Arial;
-  background:#f4f4f4;
+  background:#0f0f0f;
+  color:white;
   padding:20px;
 }
 
 h1{
   text-align:center;
+  color:#00a86b;
 }
 
 h2{
   margin-top:30px;
-  border-bottom:2px solid #ccc;
+  color:#00a86b;
+  border-bottom:1px solid #00a86b;
   padding-bottom:5px;
 }
 
 .produto{
-  background:white;
+  background:#1c1c1c;
+  margin:15px 0;
   padding:15px;
-  margin:10px 0;
+  border-radius:12px;
+  display:flex;
+  gap:15px;
+  align-items:center;
+  box-shadow:0 0 10px rgba(0,168,107,0.2);
+}
+
+.produto img{
+  width:100px;
+  height:100px;
+  object-fit:cover;
   border-radius:10px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.info{
+  flex:1;
+}
+
+.info h3{
+  margin:0;
+  color:#00ff9c;
+}
+
+.descricao{
+  font-size:14px;
+  color:#ccc;
+  margin:5px 0;
+}
+
+.preco{
+  font-weight:bold;
+  margin:5px 0;
 }
 
 button{
-  background:#25D366;
-  color:white;
+  background:#00a86b;
   border:none;
   padding:8px 12px;
-  border-radius:5px;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#008f5a;
+}
+
+select{
+  padding:8px;
+  margin-top:10px;
+  background:#1c1c1c;
+  color:white;
+  border:1px solid #00a86b;
+}
+
+.carrinho{
+  background:#1c1c1c;
+  padding:15px;
+  border-radius:12px;
+  margin-top:30px;
+}
+
+ul{
+  list-style:none;
+  padding:0;
+}
+
+li{
+  margin:5px 0;
+  display:flex;
+  justify-content:space-between;
+}
+
+.remover{
+  color:red;
   cursor:pointer;
 }
 </style>
@@ -43,80 +111,31 @@ button{
 
 <body>
 
-<h1>🍔 Lancheria Exemplo</h1>
+<h1>🍕 Lancheria Exemplo</h1>
 
-<!-- Lanches -->
+<!-- MONTE SUA PIZZA -->
+<h2>🍕 Monte sua Pizza</h2>
+
+<label>Tamanho:</label>
+<br>
+<select id="tamanho">
+  <option value="Pequena-30">Pequena - R$30</option>
+  <option value="Média-40">Média - R$40</option>
+  <option value="Grande-50">Grande - R$50</option>
+</select>
+
+<h3>Escolha até 3 sabores:</h3>
+
+<div><input type="checkbox" value="Calabresa"> Calabresa — Molho, queijo, calabresa e orégano</div>
+<div><input type="checkbox" value="Frango com Catupiry"> Frango com Catupiry — Molho, queijo, frango e catupiry</div>
+<div><input type="checkbox" value="Portuguesa"> Portuguesa — Presunto, ovo, cebola e azeitona</div>
+<div><input type="checkbox" value="4 Queijos"> 4 Queijos — Mussarela, provolone, parmesão e gorgonzola</div>
+
+<br>
+<button onclick="adicionarPizza()">Adicionar Pizza</button>
+
+<!-- LANCHES -->
 <h2>🍔 Lanches</h2>
 
 <div class="produto">
-  <h3>X-Burguer</h3>
-  <p>R$ 18,00</p>
-  <button onclick="pedir('X-Burguer',18)">Pedir</button>
-</div>
-
-<div class="produto">
-  <h3>X-Salada</h3>
-  <p>R$ 20,00</p>
-  <button onclick="pedir('X-Salada',20)">Pedir</button>
-</div>
-
-<!-- Pizzas Salgadas -->
-<h2>🍕 Pizzas Salgadas</h2>
-
-<div class="produto">
-  <h3>Calabresa</h3>
-  <p>R$ 35,00</p>
-  <button onclick="pedir('Pizza Calabresa',35)">Pedir</button>
-</div>
-
-<div class="produto">
-  <h3>Frango com Catupiry</h3>
-  <p>R$ 38,00</p>
-  <button onclick="pedir('Pizza Frango com Catupiry',38)">Pedir</button>
-</div>
-
-<!-- Pizzas Doces -->
-<h2>🍫 Pizzas Doces</h2>
-
-<div class="produto">
-  <h3>Chocolate</h3>
-  <p>R$ 40,00</p>
-  <button onclick="pedir('Pizza Doce Chocolate',40)">Pedir</button>
-</div>
-
-<div class="produto">
-  <h3>Morango com Chocolate</h3>
-  <p>R$ 42,00</p>
-  <button onclick="pedir('Pizza Doce Morango com Chocolate',42)">Pedir</button>
-</div>
-
-<!-- Bebidas -->
-<h2>🥤 Bebidas</h2>
-
-<div class="produto">
-  <h3>Coca-Cola 2L</h3>
-  <p>R$ 12,00</p>
-  <button onclick="pedir('Coca-Cola 2L',12)">Pedir</button>
-</div>
-
-<div class="produto">
-  <h3>Guaraná 2L</h3>
-  <p>R$ 10,00</p>
-  <button onclick="pedir('Guaraná 2L',10)">Pedir</button>
-</div>
-
-<script>
-function pedir(nome, preco){
-
-  let numero = "5599999999999"; // TROQUE PELO NÚMERO DO CLIENTE
-
-  let mensagem = `Olá! Quero pedir:\n${nome} - R$${preco}`;
-
-  let url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
-
-  window.open(url, "_blank");
-}
-</script>
-
-</body>
-</html>
+<img src="https://images.unsplash.com
