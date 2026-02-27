@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cardápio Online</title>
+<title>Cardápio Completo</title>
 
 <style>
 body{
@@ -13,271 +13,297 @@ body{
   padding:20px;
 }
 
-h1{
-  text-align:center;
+h1,h2,h3{
   color:#00a86b;
 }
 
-h2{
-  margin-top:30px;
-  color:#00a86b;
-  border-bottom:1px solid #00a86b;
-  padding-bottom:5px;
-}
-
-.produto{
-  background:#1c1c1c;
-  margin:15px 0;
-  padding:15px;
-  border-radius:12px;
-  display:flex;
+.pizza-box, .produtos-box{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
   gap:15px;
-  align-items:center;
-  box-shadow:0 0 10px rgba(0,168,107,0.2);
+  margin-top:15px;
 }
 
-.produto img{
-  width:100px;
-  height:100px;
-  object-fit:cover;
+.sabor, .produto{
+  background:#1c1c1c;
   border-radius:10px;
+  padding:10px;
+  text-align:center;
+  cursor:pointer;
+  border:2px solid transparent;
 }
 
-.info{
-  flex:1;
+.sabor img, .produto img{
+  width:100%;
+  height:110px;
+  object-fit:cover;
+  border-radius:8px;
 }
 
-.info h3{
-  margin:0;
-  color:#00ff9c;
-}
-
-.descricao{
-  font-size:14px;
-  color:#ccc;
-  margin:5px 0;
-}
-
-.preco{
-  font-weight:bold;
-  margin:5px 0;
+.sabor.selecionado{
+  border:2px solid #00ff9c;
+  box-shadow:0 0 10px #00ff9c;
 }
 
 button{
   background:#00a86b;
   border:none;
-  padding:8px 12px;
+  padding:6px 10px;
   color:white;
   border-radius:6px;
   cursor:pointer;
-}
-
-button:hover{
-  background:#008f5a;
+  margin-top:5px;
 }
 
 select{
   padding:8px;
-  margin-top:10px;
   background:#1c1c1c;
   color:white;
   border:1px solid #00a86b;
+  margin-top:5px;
 }
 
 .carrinho{
   background:#1c1c1c;
   padding:15px;
-  border-radius:12px;
+  border-radius:10px;
   margin-top:30px;
-}
-
-ul{
-  list-style:none;
-  padding:0;
-}
-
-li{
-  margin:5px 0;
-  display:flex;
-  justify-content:space-between;
 }
 
 .remover{
   color:red;
   cursor:pointer;
+  margin-left:10px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🍕 Lancheria Exemplo</h1>
+<h1>🍕 Pizzaria Exemplo</h1>
 
-<!-- MONTE SUA PIZZA -->
-<h2>🍕 Monte sua Pizza</h2>
+<!-- ================= PIZZA SALGADA ================= -->
+<h2>Pizza Salgada</h2>
 
 <label>Tamanho:</label>
-<br>
-<select id="tamanho">
-  <option value="Pequena-30">Pequena - R$30</option>
-  <option value="Média-40">Média - R$40</option>
-  <option value="Grande-50">Grande - R$50</option>
+<select id="tamanhoSalgada" onchange="alterarLimite('salgada')">
+<option value="Pequena-30">Pequena - R$30 (1 sabor)</option>
+<option value="Média-40">Média - R$40 (2 sabores)</option>
+<option value="Grande-50">Grande - R$50 (3 sabores)</option>
 </select>
 
-<h3>Escolha até 3 sabores:</h3>
+<div class="pizza-box">
+<div class="sabor salgada" onclick="toggleSabor(this,'Calabresa','salgada')">
+<img src="imagens/calabresa.jpg">
+<p>Calabresa</p>
+</div>
 
-<div><input type="checkbox" value="Calabresa"> Calabresa — Molho, queijo, calabresa e orégano</div>
-<div><input type="checkbox" value="Frango com Catupiry"> Frango com Catupiry — Molho, queijo, frango e catupiry</div>
-<div><input type="checkbox" value="Portuguesa"> Portuguesa — Presunto, ovo, cebola e azeitona</div>
-<div><input type="checkbox" value="4 Queijos"> 4 Queijos — Mussarela, provolone, parmesão e gorgonzola</div>
+<div class="sabor salgada" onclick="toggleSabor(this,'Frango','salgada')">
+<img src="imagens/frango.jpg">
+<p>Frango</p>
+</div>
+
+<div class="sabor salgada" onclick="toggleSabor(this,'Portuguesa','salgada')">
+<img src="imagens/portuguesa.jpg">
+<p>Portuguesa</p>
+</div>
+</div>
+
+<h3>Borda:</h3>
+<select id="bordaSalgada">
+<option value="Sem borda-0">Sem borda</option>
+<option value="Catupiry-15">Catupiry (+15)</option>
+<option value="Cheddar-15">Cheddar (+15)</option>
+</select>
 
 <br>
-<button onclick="adicionarPizza()">Adicionar Pizza</button>
+<button onclick="adicionarPizza('salgada')">Adicionar Pizza Salgada</button>
 
-<!-- LANCHES -->
+<!-- ================= PIZZA DOCE ================= -->
+<h2>Pizza Doce</h2>
+
+<label>Tamanho:</label>
+<select id="tamanhoDoce" onchange="alterarLimite('doce')">
+<option value="Pequena-35">Pequena - R$35 (1 sabor)</option>
+<option value="Média-45">Média - R$45 (2 sabores)</option>
+<option value="Grande-55">Grande - R$55 (3 sabores)</option>
+</select>
+
+<div class="pizza-box">
+<div class="sabor doce" onclick="toggleSabor(this,'Chocolate','doce')">
+<img src="imagens/chocolate.jpg">
+<p>Chocolate</p>
+</div>
+
+<div class="sabor doce" onclick="toggleSabor(this,'Morango','doce')">
+<img src="imagens/morango.jpg">
+<p>Morango</p>
+</div>
+</div>
+
+<h3>Borda:</h3>
+<select id="bordaDoce">
+<option value="Sem borda-0">Sem borda</option>
+<option value="Chocolate-15">Chocolate (+15)</option>
+</select>
+
+<br>
+<button onclick="adicionarPizza('doce')">Adicionar Pizza Doce</button>
+
+<!-- ================= LANCHES ================= -->
 <h2>🍔 Lanches</h2>
 
+<div class="produtos-box">
 <div class="produto">
-<img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
-<div class="info">
-<h3>X-Burguer</h3>
-<div class="descricao">Pão, hambúrguer, queijo, alface e tomate.</div>
-<div class="preco">R$18</div>
-<button onclick="adicionar('X-Burguer',18)">Adicionar</button>
-</div>
+<img src="imagens/xburguer.jpg">
+<p>X-Burguer<br>R$18</p>
+<button onclick="adicionarItem('X-Burguer',18)">Adicionar</button>
 </div>
 
 <div class="produto">
-<img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092">
-<div class="info">
-<h3>X-Salada</h3>
-<div class="descricao">Pão, hambúrguer, queijo, alface, tomate e maionese.</div>
-<div class="preco">R$20</div>
-<button onclick="adicionar('X-Salada',20)">Adicionar</button>
+<img src="imagens/xsalada.jpg">
+<p>X-Salada<br>R$20</p>
+<button onclick="adicionarItem('X-Salada',20)">Adicionar</button>
 </div>
 </div>
 
-<!-- BEBIDAS -->
+<!-- ================= BEBIDAS ================= -->
 <h2>🥤 Bebidas</h2>
 
+<div class="produtos-box">
 <div class="produto">
-<img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e">
-<div class="info">
-<h3>Coca-Cola 2L</h3>
-<div class="descricao">Refrigerante Coca-Cola 2 Litros</div>
-<div class="preco">R$12</div>
-<button onclick="adicionar('Coca-Cola 2L',12)">Adicionar</button>
-</div>
+<img src="imagens/coca.jpg">
+<p>Coca-Cola 2L<br>R$12</p>
+<button onclick="adicionarItem('Coca-Cola 2L',12)">Adicionar</button>
 </div>
 
 <div class="produto">
-<img src="https://images.unsplash.com/photo-1624517452488-04869289c4ca">
-<div class="info">
-<h3>Guaraná 2L</h3>
-<div class="descricao">Refrigerante Guaraná 2 Litros</div>
-<div class="preco">R$10</div>
-<button onclick="adicionar('Guaraná 2L',10)">Adicionar</button>
+<img src="imagens/guarana.jpg">
+<p>Guaraná 2L<br>R$10</p>
+<button onclick="adicionarItem('Guaraná 2L',10)">Adicionar</button>
 </div>
 </div>
 
-<!-- CARRINHO -->
+<!-- ================= CARRINHO ================= -->
 <div class="carrinho">
 <h2>🛒 Carrinho</h2>
 <ul id="listaCarrinho"></ul>
 <p><strong>Total: R$ <span id="total">0</span></strong></p>
+<p><small>⚠ Taxa de entrega será informada no WhatsApp.</small></p>
 <button onclick="enviarPedido()">Pedir no WhatsApp</button>
 </div>
 
 <script>
-
-const NUMERO_WHATSAPP = "5599999999999"; // TROQUE AQUI
+const NUMERO_WHATSAPP = "5599999999999";
 
 let carrinho = [];
+let saboresSelecionados = {salgada:[], doce:[]};
+let limiteSabores = {salgada:1, doce:1};
 
-function adicionar(nome, preco){
-  carrinho.push({nome, preco});
-  atualizarCarrinho();
+function alterarLimite(tipo){
+let select = document.getElementById(tipo==="salgada"?"tamanhoSalgada":"tamanhoDoce");
+let valor = select.value;
+
+if(valor.includes("Pequena")) limiteSabores[tipo]=1;
+if(valor.includes("Média")) limiteSabores[tipo]=2;
+if(valor.includes("Grande")) limiteSabores[tipo]=3;
+
+limparSabores(tipo);
 }
 
-function adicionarPizza(){
-  const tamanhoSelect = document.getElementById("tamanho");
-  const tamanhoValor = tamanhoSelect.value.split("-");
-  const tamanho = tamanhoValor[0];
-  const preco = parseFloat(tamanhoValor[1]);
+function toggleSabor(el,nome,tipo){
+if(el.classList.contains("selecionado")){
+el.classList.remove("selecionado");
+saboresSelecionados[tipo]=saboresSelecionados[tipo].filter(s=>s!==nome);
+}else{
+if(saboresSelecionados[tipo].length>=limiteSabores[tipo]){
+alert("Máximo "+limiteSabores[tipo]+" sabores");
+return;
+}
+el.classList.add("selecionado");
+saboresSelecionados[tipo].push(nome);
+}
+}
 
-  const checkboxes = document.querySelectorAll("input[type=checkbox]");
-  let sabores = [];
+function limparSabores(tipo){
+saboresSelecionados[tipo]=[];
+document.querySelectorAll("."+tipo).forEach(el=>el.classList.remove("selecionado"));
+}
 
-  checkboxes.forEach(cb => {
-    if(cb.checked){
-      sabores.push(cb.value);
-    }
-  });
+function adicionarPizza(tipo){
+if(saboresSelecionados[tipo].length===0){
+alert("Escolha pelo menos 1 sabor");
+return;
+}
 
-  if(sabores.length === 0){
-    alert("Escolha pelo menos 1 sabor!");
-    return;
-  }
+let tamanhoSelect=document.getElementById(tipo==="salgada"?"tamanhoSalgada":"tamanhoDoce");
+let tamanhoInfo=tamanhoSelect.value.split("-");
+let tamanho=tamanhoInfo[0];
+let preco=parseFloat(tamanhoInfo[1]);
 
-  if(sabores.length > 3){
-    alert("Máximo 3 sabores!");
-    return;
-  }
+let bordaSelect=document.getElementById(tipo==="salgada"?"bordaSalgada":"bordaDoce");
+let bordaInfo=bordaSelect.value.split("-");
+let nomeBorda=bordaInfo[0];
+let precoBorda=parseFloat(bordaInfo[1]);
 
-  let descricao = `Pizza ${tamanho} (${sabores.join(", ")})`;
+preco+=precoBorda;
 
-  carrinho.push({nome: descricao, preco});
-  atualizarCarrinho();
+let descricao=`Pizza ${tipo} ${tamanho} (${saboresSelecionados[tipo].join(", ")})`;
+if(nomeBorda!=="Sem borda") descricao+=` + Borda ${nomeBorda}`;
 
-  checkboxes.forEach(cb => cb.checked = false);
+carrinho.push({nome:descricao,preco});
+atualizarCarrinho();
+limparSabores(tipo);
+}
+
+function adicionarItem(nome,preco){
+carrinho.push({nome,preco});
+atualizarCarrinho();
 }
 
 function atualizarCarrinho(){
-  const lista = document.getElementById("listaCarrinho");
-  const totalSpan = document.getElementById("total");
+let lista=document.getElementById("listaCarrinho");
+let totalSpan=document.getElementById("total");
 
-  lista.innerHTML = "";
-  let total = 0;
+lista.innerHTML="";
+let total=0;
 
-  carrinho.forEach((item, index) => {
-    total += item.preco;
-    lista.innerHTML += `
-      <li>
-        ${item.nome} - R$${item.preco}
-        <span class="remover" onclick="removerItem(${index})">❌</span>
-      </li>
-    `;
-  });
+carrinho.forEach((item,index)=>{
+total+=item.preco;
+lista.innerHTML+=`${item.nome} - R$${item.preco} <span class="remover" onclick="removerItem(${index})">❌</span><br>`;
+});
 
-  totalSpan.innerText = total;
+totalSpan.innerText=total;
 }
 
 function removerItem(index){
-  carrinho.splice(index,1);
-  atualizarCarrinho();
+carrinho.splice(index,1);
+atualizarCarrinho();
 }
 
 function enviarPedido(){
-  if(carrinho.length === 0){
-    alert("Carrinho vazio!");
-    return;
-  }
-
-  let mensagem = "Olá! Quero pedir:\n\n";
-  let total = 0;
-
-  carrinho.forEach(item => {
-    mensagem += `${item.nome} - R$${item.preco}\n`;
-    total += item.preco;
-  });
-
-  mensagem += `\nTotal: R$${total}`;
-
-  let url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
-
-  window.open(url, "_blank");
+if(carrinho.length===0){
+alert("Carrinho vazio!");
+return;
 }
 
+let mensagem="Olá! Quero pedir:\n\n";
+let total=0;
+
+carrinho.forEach(item=>{
+mensagem+=`${item.nome} - R$${item.preco}\n`;
+total+=item.preco;
+});
+
+mensagem+=`\nTotal: R$${total}`;
+mensagem+="\nTaxa de entrega será combinada no atendimento.";
+
+let url=`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+window.open(url,"_blank");
+}
+
+alterarLimite("salgada");
+alterarLimite("doce");
 </script>
 
 </body>
