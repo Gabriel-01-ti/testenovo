@@ -1,27 +1,122 @@
 <!DOCTYPE html>
-  <a href="sobre.html">fazer diagnostico
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title> Diagnóstico Agrícola</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="description" content="Saiba mais sobre o projeto Diagnóstico Agrícola.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardápio Online</title>
+
+<style>
+body{
+  font-family: Arial;
+  background:#f4f4f4;
+  padding:20px;
+}
+
+h1{
+  text-align:center;
+}
+
+h2{
+  margin-top:30px;
+  border-bottom:2px solid #ccc;
+  padding-bottom:5px;
+}
+
+.produto{
+  background:white;
+  padding:15px;
+  margin:10px 0;
+  border-radius:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+button{
+  background:#25D366;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  border-radius:5px;
+  cursor:pointer;
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Sobre o Projeto 🌱</h1>
 
-    <p>
-      Este site foi criado para ajudar agricultores a identificar pragas e doenças nas lavouras 
-      de forma rápida e simples. Nosso objetivo é fornecer um diagnóstico inicial e indicar 
-      medidas de manejo adequadas.
-    </p>
+<h1>🍔 Lancheria Exemplo</h1>
 
-    <p>
-      Os dados foram coletados de fontes confiáveis e adaptados para uso prático no campo.
-    </p>
+<!-- Lanches -->
+<h2>🍔 Lanches</h2>
 
-    <a href="sobre.html" style="display:inline-block; margin-top:20px;">Voltar à página inicial</a>
-  </div>
+<div class="produto">
+  <h3>X-Burguer</h3>
+  <p>R$ 18,00</p>
+  <button onclick="pedir('X-Burguer',18)">Pedir</button>
+</div>
+
+<div class="produto">
+  <h3>X-Salada</h3>
+  <p>R$ 20,00</p>
+  <button onclick="pedir('X-Salada',20)">Pedir</button>
+</div>
+
+<!-- Pizzas Salgadas -->
+<h2>🍕 Pizzas Salgadas</h2>
+
+<div class="produto">
+  <h3>Calabresa</h3>
+  <p>R$ 35,00</p>
+  <button onclick="pedir('Pizza Calabresa',35)">Pedir</button>
+</div>
+
+<div class="produto">
+  <h3>Frango com Catupiry</h3>
+  <p>R$ 38,00</p>
+  <button onclick="pedir('Pizza Frango com Catupiry',38)">Pedir</button>
+</div>
+
+<!-- Pizzas Doces -->
+<h2>🍫 Pizzas Doces</h2>
+
+<div class="produto">
+  <h3>Chocolate</h3>
+  <p>R$ 40,00</p>
+  <button onclick="pedir('Pizza Doce Chocolate',40)">Pedir</button>
+</div>
+
+<div class="produto">
+  <h3>Morango com Chocolate</h3>
+  <p>R$ 42,00</p>
+  <button onclick="pedir('Pizza Doce Morango com Chocolate',42)">Pedir</button>
+</div>
+
+<!-- Bebidas -->
+<h2>🥤 Bebidas</h2>
+
+<div class="produto">
+  <h3>Coca-Cola 2L</h3>
+  <p>R$ 12,00</p>
+  <button onclick="pedir('Coca-Cola 2L',12)">Pedir</button>
+</div>
+
+<div class="produto">
+  <h3>Guaraná 2L</h3>
+  <p>R$ 10,00</p>
+  <button onclick="pedir('Guaraná 2L',10)">Pedir</button>
+</div>
+
+<script>
+function pedir(nome, preco){
+
+  let numero = "5599999999999"; // TROQUE PELO NÚMERO DO CLIENTE
+
+  let mensagem = `Olá! Quero pedir:\n${nome} - R$${preco}`;
+
+  let url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+
+  window.open(url, "_blank");
+}
+</script>
+
 </body>
 </html>
