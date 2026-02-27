@@ -138,4 +138,147 @@ li{
 <h2>🍔 Lanches</h2>
 
 <div class="produto">
-<img src="https://images.unsplash.com
+<img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
+<div class="info">
+<h3>X-Burguer</h3>
+<div class="descricao">Pão, hambúrguer, queijo, alface e tomate.</div>
+<div class="preco">R$18</div>
+<button onclick="adicionar('X-Burguer',18)">Adicionar</button>
+</div>
+</div>
+
+<div class="produto">
+<img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092">
+<div class="info">
+<h3>X-Salada</h3>
+<div class="descricao">Pão, hambúrguer, queijo, alface, tomate e maionese.</div>
+<div class="preco">R$20</div>
+<button onclick="adicionar('X-Salada',20)">Adicionar</button>
+</div>
+</div>
+
+<!-- BEBIDAS -->
+<h2>🥤 Bebidas</h2>
+
+<div class="produto">
+<img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e">
+<div class="info">
+<h3>Coca-Cola 2L</h3>
+<div class="descricao">Refrigerante Coca-Cola 2 Litros</div>
+<div class="preco">R$12</div>
+<button onclick="adicionar('Coca-Cola 2L',12)">Adicionar</button>
+</div>
+</div>
+
+<div class="produto">
+<img src="https://images.unsplash.com/photo-1624517452488-04869289c4ca">
+<div class="info">
+<h3>Guaraná 2L</h3>
+<div class="descricao">Refrigerante Guaraná 2 Litros</div>
+<div class="preco">R$10</div>
+<button onclick="adicionar('Guaraná 2L',10)">Adicionar</button>
+</div>
+</div>
+
+<!-- CARRINHO -->
+<div class="carrinho">
+<h2>🛒 Carrinho</h2>
+<ul id="listaCarrinho"></ul>
+<p><strong>Total: R$ <span id="total">0</span></strong></p>
+<button onclick="enviarPedido()">Pedir no WhatsApp</button>
+</div>
+
+<script>
+
+const NUMERO_WHATSAPP = "5599999999999"; // TROQUE AQUI
+
+let carrinho = [];
+
+function adicionar(nome, preco){
+  carrinho.push({nome, preco});
+  atualizarCarrinho();
+}
+
+function adicionarPizza(){
+  const tamanhoSelect = document.getElementById("tamanho");
+  const tamanhoValor = tamanhoSelect.value.split("-");
+  const tamanho = tamanhoValor[0];
+  const preco = parseFloat(tamanhoValor[1]);
+
+  const checkboxes = document.querySelectorAll("input[type=checkbox]");
+  let sabores = [];
+
+  checkboxes.forEach(cb => {
+    if(cb.checked){
+      sabores.push(cb.value);
+    }
+  });
+
+  if(sabores.length === 0){
+    alert("Escolha pelo menos 1 sabor!");
+    return;
+  }
+
+  if(sabores.length > 3){
+    alert("Máximo 3 sabores!");
+    return;
+  }
+
+  let descricao = `Pizza ${tamanho} (${sabores.join(", ")})`;
+
+  carrinho.push({nome: descricao, preco});
+  atualizarCarrinho();
+
+  checkboxes.forEach(cb => cb.checked = false);
+}
+
+function atualizarCarrinho(){
+  const lista = document.getElementById("listaCarrinho");
+  const totalSpan = document.getElementById("total");
+
+  lista.innerHTML = "";
+  let total = 0;
+
+  carrinho.forEach((item, index) => {
+    total += item.preco;
+    lista.innerHTML += `
+      <li>
+        ${item.nome} - R$${item.preco}
+        <span class="remover" onclick="removerItem(${index})">❌</span>
+      </li>
+    `;
+  });
+
+  totalSpan.innerText = total;
+}
+
+function removerItem(index){
+  carrinho.splice(index,1);
+  atualizarCarrinho();
+}
+
+function enviarPedido(){
+  if(carrinho.length === 0){
+    alert("Carrinho vazio!");
+    return;
+  }
+
+  let mensagem = "Olá! Quero pedir:\n\n";
+  let total = 0;
+
+  carrinho.forEach(item => {
+    mensagem += `${item.nome} - R$${item.preco}\n`;
+    total += item.preco;
+  });
+
+  mensagem += `\nTotal: R$${total}`;
+
+  let url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+
+  window.open(url, "_blank");
+}
+
+</script>
+
+</body>
+</html>
