@@ -315,6 +315,30 @@ return;
 
 let tipoPedido = document.getElementById("tipoPedido").value;
 
+let rua="", numero="", bairro="";
+
+if(tipoPedido === "Entrega"){
+
+rua = prompt("Digite o nome da Rua:");
+if(!rua || rua.trim()===""){
+alert("Rua obrigatória para entrega.");
+return;
+}
+
+numero = prompt("Digite o Número:");
+if(!numero || numero.trim()===""){
+alert("Número obrigatório para entrega.");
+return;
+}
+
+bairro = prompt("Digite o Bairro:");
+if(!bairro || bairro.trim()===""){
+alert("Bairro obrigatório para entrega.");
+return;
+}
+
+}
+
 let agora = new Date();
 let data = agora.toLocaleDateString("pt-BR");
 let hora = agora.toLocaleTimeString("pt-BR");
@@ -325,6 +349,14 @@ mensagem += `📅 Data: ${data}\n`;
 mensagem += `⏰ Hora: ${hora}\n`;
 mensagem += `👤 Cliente: ${nomeCliente}\n`;
 mensagem += `📦 Tipo: ${tipoPedido}\n`;
+
+if(tipoPedido === "Entrega"){
+mensagem += `📍 Endereço:\n`;
+mensagem += `Rua: ${rua}\n`;
+mensagem += `Número: ${numero}\n`;
+mensagem += `Bairro: ${bairro}\n`;
+}
+
 mensagem += "----------------------------------\n\n";
 mensagem += "*PEDIDO:*\n\n";
 
@@ -336,10 +368,11 @@ total += item.preco;
 });
 
 mensagem += "----------------------------------\n";
-mensagem += `💵 *TOTAL: R$${total}*\n\n`;
+mensagem += `💵 *TOTAL (sem taxa): R$${total}*\n\n`;
 
 if(tipoPedido === "Entrega"){
-mensagem += "🚗 Taxa de entrega será informada no atendimento.\n";
+mensagem += "🚗 Aguardando cálculo da taxa de entrega.\n";
+mensagem += "💰 Valor final será confirmado no atendimento.\n";
 }
 
 mensagem += "\nAguardando confirmação do pedido ✅";
